@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示</title>
+</head>
+<body>
+<form>
+    请输入用户名：<input type="text" name="username" id="userName" placeholder="请输入用户名"/><br/>
+    请输入密码：<input type="password" name="password" id="password" placeholder="请输入密码"/><br/>
+    请输入密码：<input type="text" name="password" id="telphone" placeholder="请输入电话号码"/><br/>
+    <button type="button" id="submitForm">提交</button>
+</form>
+<script src="../scripts/validator.js"></script>
+<script>
+    var $ = function(_id){
+        return document.getElementById(_id);
+    }
+
+    var validateFunc = function(){
+        var validate = new Validator()
+        validate.add($('userName'),[
+            {
+                strategy: 'isNotEmpty',
+                errMsg: '用户名不能为空'
+            },
+            {
+                strategy: 'minLength:6',
+                errMsg: '用户名不能少于6位字符'
+            }
+        ])
+
+        validate.add($('password'),[
+            {
+                strategy: 'isNotEmpty',
+                errMsg: '密码不能为空'
+            },
+            {
+                strategy: 'minLength:6',
+                errMsg: '密码不能少于6位字符'
+            }
+        ])
+
+        validate.add($('telphone'),[
+            {
+                strategy: 'isNotEmpty',
+                errMsg: '手机号码不能为空'
+            },
+            {
+                strategy: 'isPhone',
+                errMsg: '请输入正确的手机号码'
+            }
+        ])
+
+        var errMsg = validate.start();
+        console.log(errMsg);
+        if(errMsg){
+            return errMsg;
+        }
+    }
+
+    $('submitForm').onclick = function(){
+        var errMsg = validateFunc()
+        if(errMsg){
+            alert(errMsg);
+            return false;
+        }else{
+            console.log('验证通过')
+        }
+    }
+
+</script>
+</body>
+</html>
